@@ -1,31 +1,22 @@
 import React, { useState, useRef, ChangeEvent, MouseEvent } from 'react';
 import Button from '@mui/material/Button';
 import CancelIcon from '@mui/icons-material/Cancel';
+import axios from 'axios'
 import './styles.css';
 
-interface FileInfo {
-  fileName: string;
-  blob: Blob;
-}
 
 const FileUpload: React.FC = () => {
-  const [fileInfo, setFileInfo] = useState<FileInfo[]>([]);
+  const [fileInfo, setFileInfo] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // STORE INFORMATION ABOUT SELECTED FILES
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
-      const newFileInfo = Array.from(files).map((file) => {
-        const blob = new Blob([file], { type: file.type });
-        return {
-          fileName: file.name,
-          blob: blob,
-        };
-      });
-      setFileInfo(newFileInfo);
+      setFileInfo(Array.from(files));
     }
   };
+
 
   // HANDLE CANCEL FILE ACTION
   const handleCancelFile = (index: number) => (event: MouseEvent<HTMLDivElement>) => {
@@ -40,6 +31,33 @@ const FileUpload: React.FC = () => {
     }
   };
 
+  
+  const uploadFile = async () => {
+    if (fileInfo.length === 0) {
+      console.error('No files selected for upload.');
+      return;
+    }
+
+    const formData = new FormData();
+    fileInfo.forEach((file) => {
+      formData.append('file', file);
+    });
+
+    try {
+      const response = await axios.post('http://localhost:8080/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log("Response is:", response.data);
+    } catch (error) {
+      console.error('There was a problem with the upload operation:', error);
+    }
+  };
+
+  
+
   return (
     <>
       <div className='fileUploadContainer'>
@@ -48,7 +66,7 @@ const FileUpload: React.FC = () => {
             ref={fileInputRef}
             className="image-input"
             type="file"
-            accept=".pdf,.doc,.docx"
+            accept=".txt"
             onChange={handleFileChange}
             multiple
           />
@@ -57,7 +75,7 @@ const FileUpload: React.FC = () => {
             <div className="overlay">
               {fileInfo.map((file, index) => (
                 <div key={index} className='fileInfoContainer'>
-                  <div>{file.fileName}</div>
+                  <div>{file.name}</div>
                   <div
                     className='cancelIcon'
                     onClick={handleCancelFile(index)}
@@ -79,7 +97,7 @@ const FileUpload: React.FC = () => {
             </div>
           )}
         </div>
-        <Button disabled={fileInfo.length===0} variant='contained' className='fileUploadButton'>Upload</Button>
+        <Button disabled={fileInfo.length===0} onClick={uploadFile}  variant='contained' className={fileInfo.length===0?'disabled':'fileUploadButton'}>Upload</Button>
       </div>
     </>
   );

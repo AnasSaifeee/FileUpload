@@ -69,3 +69,10 @@
     cursor: pointer;
   }
   
+  .disabled
+  {
+    background-color: #a5a5a5 !important;
+    width: 100% !important;
+    margin-top: 15px !important;
+    color: white !important;
+  } 
