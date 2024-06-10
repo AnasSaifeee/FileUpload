@@ -1,0 +1,71 @@
+
+  .fileUploadContainer
+  {
+      width: 300px;
+
+  }
+  .fileUploadButton
+  {
+    width: 100% !important;
+    margin-top: 15px !important;
+    background-color: #ff6c1e !important;
+    color: white !important;
+  }
+  .fileInfoContainer
+  {
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: solid 1px;
+    border-radius: 20px;
+    border-color: #ababab;
+    padding: 2px 10px;
+    gap:10px;
+    margin-top: 10px;
+
+  }
+  .cancelIcon
+  {
+    font-size: 1px !important;
+  }
+  .cancelIcon:hover
+  {
+    cursor: pointer;
+  }
+  .drag-drop {
+    position: relative;
+    background: var(--Gray-300, #f2f2f2);
+    height: 200px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #989898;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    overflow-x: hidden;
+    background-color: white;
+    border: dashed 1px grey;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+  .overlay {
+    font-size: 13px;
+    position: absolute;
+  }
+  .overlay:hover
+  {
+    cursor: pointer;
+  }
+  .image-input {
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
