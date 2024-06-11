@@ -1,9 +1,8 @@
 import React, { useState, useRef, ChangeEvent, MouseEvent } from 'react';
 import Button from '@mui/material/Button';
 import CancelIcon from '@mui/icons-material/Cancel';
-import axios from 'axios'
+import axios from 'axios';
 import './styles.css';
-
 
 const FileUpload: React.FC = () => {
   const [fileInfo, setFileInfo] = useState<File[]>([]);
@@ -11,12 +10,14 @@ const FileUpload: React.FC = () => {
 
   // STORE INFORMATION ABOUT SELECTED FILES
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log("handle file change called");
     const files = event.target.files;
     if (files) {
       setFileInfo(Array.from(files));
+      // Reset the input value to allow the same file to be selected again
+      event.target.value = '';
     }
   };
-
 
   // HANDLE CANCEL FILE ACTION
   const handleCancelFile = (index: number) => (event: MouseEvent<HTMLDivElement>) => {
@@ -31,7 +32,6 @@ const FileUpload: React.FC = () => {
     }
   };
 
-  
   const uploadFile = async () => {
     if (fileInfo.length === 0) {
       console.error('No files selected for upload.');
@@ -44,7 +44,7 @@ const FileUpload: React.FC = () => {
     });
 
     try {
-      const response = await axios.post('http://18.221.83.143:1999', formData, {
+      const response = await axios.post('http://3.16.135.123:9999/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -56,12 +56,12 @@ const FileUpload: React.FC = () => {
     }
   };
 
-  
+
 
   return (
     <>
       <div className='fileUploadContainer'>
-        <div className="drag-drop" onClick={handleOverlayClick}>
+        <div className="drag-drop" >
           <input
             ref={fileInputRef}
             className="image-input"
@@ -88,7 +88,7 @@ const FileUpload: React.FC = () => {
           ) : (
             <div className="overlay">
               Drag file here or{' '}
-              <span style={{ textDecoration: 'none', color: '#3E93D6' }}>
+              <span style={{ textDecoration: 'none', color: '#3E93D6' }} onClick={handleOverlayClick}>
                 Click to browse
               </span>
               <br />
@@ -97,7 +97,9 @@ const FileUpload: React.FC = () => {
             </div>
           )}
         </div>
-        <Button disabled={fileInfo.length===0} onClick={uploadFile}  variant='contained' className={fileInfo.length===0?'disabled':'fileUploadButton'}>Upload</Button>
+        <Button disabled={fileInfo.length === 0} onClick={uploadFile} variant='contained' className={fileInfo.length === 0 ? 'disabled' : 'fileUploadButton'}>
+          Upload
+        </Button>
       </div>
     </>
   );
