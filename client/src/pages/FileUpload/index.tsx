@@ -45,7 +45,7 @@ const FileUpload: React.FC = () => {
     });
 
     try {
-      const response = await axios.post('http://localhost:8080/upload', formData, {
+      const response = await axios.post('http://3.16.135.123:9999/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
