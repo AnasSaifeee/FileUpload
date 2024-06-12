@@ -2,6 +2,7 @@ import React, { useState, useRef, ChangeEvent, MouseEvent } from 'react';
 import Button from '@mui/material/Button';
 import CancelIcon from '@mui/icons-material/Cancel';
 import axios from 'axios';
+import {toast} from 'react-toastify'
 import './styles.css';
 
 const FileUpload: React.FC = () => {
@@ -44,20 +45,31 @@ const FileUpload: React.FC = () => {
     });
 
     try {
-      const response = await axios.post('http://3.16.135.123:9999/upload', formData, {
+      const response = await axios.post('http://localhost:8080/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
       console.log("Response is:", response.data);
+      if(response.data.includes("No"))
+        {
+          toast.warn("No Passwords Detected")
+        }
+      else
+      {
+        toast.success("Passwords Detected")
+      }
     } catch (error) {
       console.error('There was a problem with the upload operation:', error);
     }
   };
 
 
-
+// useEffect(()=>{
+//   toast.success("passwords detected")
+//   toast.warning("sjbsb")
+// },[])
   return (
     <>
       <div className='fileUploadContainer'>
